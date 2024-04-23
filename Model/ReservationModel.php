@@ -10,6 +10,7 @@ class ReservationModel {
     private string $telephone;
     private string $nb_enfants;
     private string $nb_adultes;
+    private bool $status;
 
     /**
      * @param string $date_reservation
@@ -20,7 +21,7 @@ class ReservationModel {
      * @param string $nb_enfants
      * @param string $nb_adultes
      */
-    public function __construct($date_reservation, $nom, $prenom, $email, $telephone, $nb_enfants, $nb_adultes)
+    public function __construct($date_reservation, $nom, $prenom, $email, $telephone, $nb_enfants, $nb_adultes ,$status)
     {
         $this->date_reservation = $date_reservation;
         $this->nom = $nom;
@@ -29,6 +30,17 @@ class ReservationModel {
         $this->telephone = $telephone;
         $this->nb_enfants = $nb_enfants;
         $this->nb_adultes = $nb_adultes;
+        $this->status = $status;
+    }
+
+    public function isStatus(): bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): void
+    {
+        $this->status = $status;
     }
 
     /**

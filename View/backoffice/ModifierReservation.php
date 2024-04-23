@@ -35,7 +35,7 @@ $reservation = $reservationController->getReservationById($reservationId);
 
     // Handle successful update
     if ($updateResult) { // Assuming the method returns true on success
-        // Redirect to AfficherReservation.php with a success message (optional)
+        // Redirect to AfficherReservations.php with a success message (optional)
         header("Location: AfficherReservations.php");
         exit; // Stop further script execution after redirect
     } else {

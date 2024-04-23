@@ -8,13 +8,13 @@ class ReservationController {
 
         // Prepare SQL statement
         $sql = "INSERT INTO reservation (date_reservation, nom, prenom, email, telephone, nb_adultes,nb_enfants )
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
         // Prepare and bind parameters
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$reservation->getDateReservation(), $reservation->getNom(), $reservation->getPrenom(),
             $reservation->getEmail(), $reservation->getTelephone(), $reservation->getNbEnfants(),
-            $reservation->getNbAdultes()]);
+            $reservation->getNbAdultes(), $reservation->getStatus()]);
 
         return $stmt->rowCount(); // Return number of affected rows
     }
@@ -35,7 +35,7 @@ class ReservationController {
         // Create and return ReservationModel object
         return new ReservationModel($reservation['date_reservation'], $reservation['nom'], $reservation['prenom'],
             $reservation['email'], $reservation['telephone'], $reservation['nb_enfants'],
-            $reservation['nb_adultes']);
+            $reservation['nb_adultes'], $reservation['status']);
     }
     public function deleteReservationById(int $id): bool {
         $pdo = Connection::getConnection();
@@ -79,7 +79,8 @@ class ReservationController {
                 $reservation['email'],
                 $reservation['telephone'],
                 $reservation['nb_enfants'],
-                $reservation['nb_adultes']
+                $reservation['nb_adultes'] ,
+                $reservation['status']
             );
             $reservationModel->setId($reservation['id']); // Set the ID
             $reservationModels[] = $reservationModel;
@@ -100,7 +101,7 @@ class ReservationController {
         $telephone = $reservationModel->getTelephone(); // Assuming string phone number
         $nbEnfants = $reservationModel->getNbEnfants(); // Assuming integer number of children
         $nbAdultes = $reservationModel->getNbAdultes(); // Assuming integer number of adults
-
+        $status = $reservationModel->getStatus(); // Assuming integer status
         // Build the UPDATE SQL statement dynamically
         $sql = "UPDATE reservation SET 
                    date_reservation = ?,
@@ -109,7 +110,8 @@ class ReservationController {
                    email = ?,
                    telephone = ?,
                    nb_enfants = ?,
-                   nb_adultes = ?
+                   nb_adultes = ?,
+                     status = ?
                    WHERE id = ?"; // Add WHERE clause for filtering
 
         try {
@@ -123,6 +125,7 @@ class ReservationController {
             $stmt->bindValue(5, $telephone, PDO::PARAM_STR); // String for phone number
             $stmt->bindValue(6, $nbEnfants, PDO::PARAM_INT); // Integer for number of children
             $stmt->bindValue(7, $nbAdultes, PDO::PARAM_INT); // Integer for number of adults
+            $stmt->bindValue(7, $status, PDO::PARAM_BOOL);
             $stmt->bindValue(8, $reservationId, PDO::PARAM_INT); // Integer for reservation ID
 
             // Execute the prepared statement for update
