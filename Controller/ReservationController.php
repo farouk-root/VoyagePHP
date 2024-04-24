@@ -7,8 +7,8 @@ class ReservationController {
         $pdo = Connection::getConnection();
 
         // Prepare SQL statement
-        $sql = "INSERT INTO reservation (date_reservation, nom, prenom, email, telephone, nb_adultes,nb_enfants )
-                VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+        $sql = "INSERT INTO reservation (date_reservation, nom, prenom, email, telephone, nb_adultes,nb_enfants, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Prepare and bind parameters
         $stmt = $pdo->prepare($sql);

@@ -8,20 +8,7 @@ $reservations = $reservationController->getAllReservations();
 
 <!DOCTYPE html>
 <html lang="en">
-<!--<head>-->
-<!--    <!-- Required meta tags -->-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <title>CelestialUI Admin</title>-->
-<!--    <!-- base:css -->-->
-<!--    <link rel="stylesheet" href="./template/vendors/typicons.font/font/typicons.css">-->
-<!--    <link rel="stylesheet" href="./template/vendors/css/vendor.bundle.base.css">-->
-<!--    <!-- endinject -->-->
-<!--    <!-- inject:css -->-->
-<!--    <link rel="stylesheet" href="./template/css/vertical-layout-light/style.css">-->
-<!--    <!-- endinject -->-->
-<!--    <link rel="shortcut icon" href="./template/images/favicon.png" />-->
-<!--</head>-->
+
 
 <?php require_once('./components/head.php'); ?>
 
@@ -118,6 +105,14 @@ $reservations = $reservationController->getAllReservations();
                                                         <input type="hidden" name="reservationId" value="<?php echo $reservationId; ?>">
                                                         <button type="submit" class="btn btn-danger" id="delete-button-<?php echo $reservationId; ?>">
                                                             Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form action="confirmer-payement.php" method="get">
+                                                        <input type="hidden" name="reservationId" value="<?php echo $reservationId; ?>">
+                                                        <button type="submit" class="btn btn-info" id="confirmer-button-<?php echo $reservationId; ?>">
+                                                            Confirmer
                                                         </button>
                                                     </form>
                                                 </td>
