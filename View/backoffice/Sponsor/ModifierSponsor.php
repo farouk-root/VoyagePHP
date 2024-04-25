@@ -18,7 +18,26 @@ else {
     $sponsorPhone = $sponsor->getSponsorPhone();
     $sponsorAddress = $sponsor->getSponsorAddress();
     $sponsorWebsite = $sponsor->getSponsorWebsite();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $sponsornew = new SponsorModel (
+            $sponsorId,
+            $_POST['sponsor_name'],
+            $_POST['sponsor_logo'],
+            $_POST['sponsor_description'],
+            $_POST['sponsor_email'],
+            $_POST['sponsor_phone'],
+            $_POST['sponsor_address'],
+            $_POST['sponsor_website']
+        );
+        echo $sponsornew->getSponsorName();
+
+        $sponsorController->updateSponsor($sponsornew);
+
+        header("Location: AfficherSponsors.php");
+    }
+
 }
+
 
 
 
@@ -51,7 +70,7 @@ else {
                                 <p class="card-description">
                                     Update Sponsor is done only by ADMIN
                                 </p>
-                                <form class="forms-sample" method="post" action="modifierSponsor.php">
+                                <form class="forms-sample" method="post">
                                     <input type="hidden" name="sponsor_id" value="<?= $sponsorId; ?>">
                                     <div class="form-group">
                                         <label for="sponsor_name">Sponsor Name</label>
@@ -82,7 +101,7 @@ else {
                                         <input type="text" class="form-control" id="sponsor_website" name="sponsor_website" value="<?= $sponsorWebsite; ?>">
                                     </div>
                                     <button type="submit" class="btn btn-primary mr-2">Update</button>
-                                    <button type="button" class="btn btn-light" onclick="window.location.href='AjouterSponsor.php'">Cancel</button>
+                                    <a href="AfficherSponsors.php" class="btn btn-light">Cancel</a>
                                 </form>
                             </div>
                         </div>

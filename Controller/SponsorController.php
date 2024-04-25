@@ -34,7 +34,7 @@ class SponsorController {
     }
 
 
-    public function addSponsor(SponsorModel $sponsor):bool {
+    public function addSponsor(SponsorModel $sponsor): int {
         try {
             $pdo = Connection::getConnection(); // Establish database connection
 
@@ -42,13 +42,35 @@ class SponsorController {
             $stmt = $pdo->prepare("INSERT INTO sponsor (sponsor_name, sponsor_logo, sponsor_description, sponsor_email, sponsor_phone, sponsor_address, sponsor_website) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             // Bind parameters and execute the query
-            $stmt->execute([$sponsor->getSponsorName(), $sponsor->getSponsorLogo(), $sponsor->getSponsorDescription(), $sponsor->getSponsorEmail(), $sponsor->getSponsorPhone(), $sponsor->getSponsorAddress(), $sponsor->getSponsorWebsite()]);
+            $stmt->execute([
+                $sponsor->getSponsorName(),
+                $sponsor->getSponsorLogo(),
+                $sponsor->getSponsorDescription(),
+                $sponsor->getSponsorEmail(),
+                $sponsor->getSponsorPhone(),
+                $sponsor->getSponsorAddress(),
+                $sponsor->getSponsorWebsite(),
+            ]);
 
-            return true; // Return true if the sponsor is added successfully
+            // After successfully inserting the sponsor, retrieve the last inserted ID
+            $lastInsertId = (int) $pdo->lastInsertId();
+
+            return (int)$lastInsertId; // Return the ID of the newly added sponsor
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage(); // Handle database connection errors
+            return -1; // Return -1 if an error occurs
+        }
+    }
+
+    public function getLastInsertId(): int {
+        try {
+            $pdo = Connection::getConnection(); // Establish database connection
+            $lastId = $pdo->lastInsertId(); // Retrieve the last insert ID
+            return (int)$lastId; // Return the last insert ID
         } catch (PDOException $e) {
             // Handle database connection errors
             echo "Error: " . $e->getMessage();
-            return false; // Return false if an error occurs
+            return -1; // Return -1 if an error occurs
         }
     }
 
@@ -110,5 +132,31 @@ class SponsorController {
             return null; // Return null if an error occurs
         }
     }
+
+    public function deleteSponsorById($sponsorId) : bool{
+        try {
+            // Establish database connection
+            $pdo = Connection::getConnection();
+
+            // Prepare the SQL statement for deleting a sponsor
+            $stmt = $pdo->prepare("DELETE FROM sponsor WHERE id = ?");
+
+            // Bind the parameter and execute the query
+            $stmt->execute([$sponsorId]);
+
+            // Check if any rows were affected by the query
+            if ($stmt->rowCount() > 0) {
+                // If rows were affected, the deletion was successful
+                return true; // Return true for success
+            } else {
+                return false; // Return false if no sponsor was found with the given ID
+            }
+        } catch (PDOException $e) {
+            // Handle database connection errors
+            echo "Error deleting sponsor: " . $e->getMessage();
+            return false; // Return false if an error occurs
+        }
+    }
+
 }
 ?>
